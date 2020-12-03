@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+/// <summary>
+/// @author :Terrow
+/// @time 2020-12-3
+/// </summary>
+namespace Demo1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string path;
+            Console.WriteLine("-----一键删除所有副本及快捷方式-----");
+            Console.WriteLine("请输入文件夹路径：   \n注意：多目录以;隔开");
+            path = Console.ReadLine();
+            string[] paths = path.Split(';');
+            try
+            {
+                for (int pathIndex=0;pathIndex<paths.Length;pathIndex++) {
+                    string[] sonPath = Directory.GetDirectories(paths[pathIndex]);
+                    string[] sonFile = Directory.GetFiles(paths[pathIndex]);
+                    for (int i = 0; i < sonPath.Length; i++)
+                    {
+                        if (sonPath[i].Contains("副本"))
+                        {
+                            Directory.Delete(sonPath[i],true);
+                            Console.WriteLine(sonPath[i] + "副本已删除");
+                        }
+                        else if (sonPath[i].Contains("快捷方式"))
+                        {
+                            Directory.Delete(sonPath[i],true);
+                            Console.WriteLine(sonPath[i] + "快捷方式已删除");
+                        }
+                        else
+                        {
+                            Console.WriteLine(sonPath[i]);
+                        }
+
+                    }
+                    for (int i = 0; i < sonFile.Length; i++)
+                    {
+                        if (sonFile[i].Contains("副本"))
+                        {
+                            File.Delete(sonFile[i]);
+                            Console.WriteLine(sonFile[i] + "副本已删除");
+                        }
+                        else if (sonFile[i].Contains("快捷方式"))
+                        {
+                            File.Delete(sonFile[i]);
+                            Console.WriteLine(sonFile[i] + "快捷方式已删除");
+                        }
+                        else
+                        {
+                            Console.WriteLine(sonFile[i]);                          
+                        }
+
+
+                    }
+                }
+                Console.WriteLine("---处理完成 按任意键退出！---");
+                Console.ReadKey();
+            }
+            catch(Exception exception){
+                Console.WriteLine("程序异常！请核实输入的路径！");
+            }               
+
+        }
+    }
+}
